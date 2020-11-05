@@ -1,0 +1,32 @@
+#!/usr/bin/env node
+
+/**
+ * サーバの設定
+ */
+
+// モジュールのロード
+const app = require('../server');
+const http = require('http');
+const WebSocket = require('ws');
+
+// ポートの設定を行う
+const port = process.env.PORT || 4040;
+app.set('port', port);
+
+// サーバオブジェクトを生成する
+const server = http.createServer(app);
+
+// webSocketオブジェクト
+const wss = new WebSocket.Server({ server });
+
+// webSocketの処理
+require('../webSockets')(wss);
+
+// 接続を待ち受ける
+server.listen(port);
+server.on('listening', onListening);
+
+function onListening() {
+    // ログ出力
+    console.log('Example app listening on port ' + port + '!');
+}
