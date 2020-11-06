@@ -122,9 +122,11 @@ router.get('/test_setting_game', (req, res) => {
         // unityRendering
         // 3. unityWebGLページを返す
         console.log("sucess!" + diff);
+        res.render('unity_build');
       } else {
         // form
         console.log("failure" + diff);
+        res.render('/');
       }
     })
   }).catch((err) => {
