@@ -1,7 +1,6 @@
 const express = require('express');
 express.static.mime.types['wasm'] = 'application/wasm'
 const routes = require('./routes/index');
-const compression = require('compression');
 const server = express();
 
 server.use('/', routes);
@@ -14,7 +13,7 @@ server.set('view engine', 'ejs');
 
 // public/ フォルダ以下の静的ファイルを読み込む
 server.use(express.static('public'));
-server.use('/build', express.static('public/unity_build/'));
+server.use('/build', express.static('public/build3/'));
 
 // server.use(compression());
 
