@@ -1,7 +1,12 @@
 const express = require('express');
-express.static.mime.types['wasm'] = 'application/wasm'
+const bodyParser = require('body-parser');
 const routes = require('./routes/index');
 const server = express();
+
+// postをbodyで受け取るには必要。公式ドキュメント
+// https://expressjs.com/en/4x/api.html#req.body
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
 
 server.use('/', routes);
 

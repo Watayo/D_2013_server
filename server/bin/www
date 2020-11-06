@@ -18,7 +18,7 @@ const server = http.createServer(app);
 
 // webSocketオブジェクト
 const wss = new WebSocket.Server({ server });
-
+// const wss2 = new WebSocket.Server({ server });
 // webSocketの処理
 require('../webSockets')(wss);
 
