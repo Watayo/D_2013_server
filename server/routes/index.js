@@ -12,7 +12,7 @@ admin.initializeApp({
   credential: admin.credential.cert({
     project_id: env.PROJECT_ID,
     client_email: env.CLIENT_EMAIL,
-    private_key: env.PRIVATE_KEY
+    private_key: env.PRIVATE_KEY.replace(/\\n/g, '\n')
   }),
   databaseURL: "https://jphack2.firebaseio.com"
 });
