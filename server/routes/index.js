@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
-// const config = require('../config/jphack2-firebase-adminsdk-lifa7-418bc6b69e.json');
 require('dotenv').config();
 const env = process.env;
 
@@ -136,6 +135,7 @@ router.get('/test_setting_game', (req, res) => {
 // test unity build
 router.get('/test_unity_build', (req, res) => {
   res.render('unity_build');
+
 });
 
 // test Unity_score
