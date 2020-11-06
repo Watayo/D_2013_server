@@ -2,10 +2,18 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('firebase-admin');
-const config = require('../config/jphack2-firebase-adminsdk-lifa7-418bc6b69e.json');
+// const config = require('../config/jphack2-firebase-adminsdk-lifa7-418bc6b69e.json');
+require('dotenv').config();
+const env = process.env;
 
+
+// console.log(env.PROJECT_ID);
 admin.initializeApp({
-  credential: admin.credential.cert(config),
+  credential: admin.credential.cert({
+    project_id: env.PROJECT_ID,
+    client_email: env.CLIENT_EMAIL,
+    private_key: env.PRIVATE_KEY
+  }),
   databaseURL: "https://jphack2.firebaseio.com"
 });
 
