@@ -22,7 +22,8 @@ router.get('/', (req, res) => {
   res.render('index');
 });
 
-router.get('/setting_game/:id', (req, res) => {
+router.get('/setting_game', (req, res) => {
+  console.log(req.query.uid);
   // 1. expo clientから受け取る.
   // firestoreでゲーム振り分け
   const time_manegement = (time) => {
@@ -44,7 +45,13 @@ router.get('/setting_game/:id', (req, res) => {
     return compare;
   }
 
-  db.collection('events').get().then((snapshot) => {
+  let eventsRef = db.collection('events');
+
+  eventsRef.where('uid', '==', req.query.uid).limit(1).get().then(snapshot => {
+    if (snapshot.empty) {
+      console.log('No matching documents.');
+      return
+    }
     snapshot.forEach((doc) => {
       // console.log(doc.data());
       let t = time_manegement(new Date(doc.data().get_up_time));
@@ -53,20 +60,22 @@ router.get('/setting_game/:id', (req, res) => {
 
       let diff = compare_time(t, t_hope) / 60.0;
 
-      if (diff < 10.0) {
+      if (diff <= 10.0) {
         // unityRendering
         // 3. unityWebGLページを返す
-        console.log(diff);
+        console.log("sucess!" + diff);
+        res.render('unity_build');
       } else {
         // form
-        console.log(diff);
+        console.log("failure" + diff);
+        res.render('/');
       }
     })
-
   }).catch((err) => {
     console.log('Error getting documents', err);
   });
 });
+
 
 
 
