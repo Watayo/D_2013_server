@@ -5,7 +5,7 @@ const admin = require('firebase-admin');
 require('dotenv').config();
 const env = process.env;
 const WebSocket = require('ws');
-const ws = new WebSocket('ws:desolate-ocean-79020.herokuapp.com', {
+const ws = new WebSocket('ws://desolate-ocean-79020.herokuapp.com', {
   origin: 'https://desolate-ocean-79020.herokuapp.com'
 });
 
