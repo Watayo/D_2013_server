@@ -61,9 +61,7 @@ router.get('/setting_game', (req, res) => {
 
   let eventsRef = db.collection('events');
 
-  let t = [];
-
-  eventsRef.where('user_id', '==', ID).limit(2).get().then(snapshot => {
+  eventsRef.where('user_id', '==', ID).limit(1).get().then(snapshot => {
     if (snapshot.empty) {
 
       console.log('No matching documents.');
@@ -71,31 +69,34 @@ router.get('/setting_game', (req, res) => {
     }
     snapshot.forEach((doc) => {
       // console.log(doc.data());
-      t.push(time_manegement(new Date(doc.data())));
+      let t = time_manegement(new Date(doc.data().get_up_time));
+
+      let t2 = time_manegement(new Date(doc.data().getup_hope_time));
+
+      let diff = compare_time(t, t2) / 60.0;
+
+      if (diff <= 10.0) {
+        // unityRendering
+        // 3. unityWebGLページを返す
+        console.log("sucess!" + diff);
+        res.render('unity_build');
+
+        // game中にする
+        db.collection('users').doc(ID).set({
+          on_game: true,
+        })
+
+      } else {
+        // form
+        console.log("failure" + diff);
+        res.render('/');
+      }
+
 
     })
   }).catch((err) => {
     console.log('Error getting documents', err);
   });
-
-  let diff = compare_time(t[0], t[1]) / 60.0;
-
-  if (diff <= 10.0) {
-    // unityRendering
-    // 3. unityWebGLページを返す
-    console.log("sucess!" + diff);
-    res.render('unity_build');
-
-    // game中にする
-    db.collection('users').doc(ID).set({
-      on_game: true,
-    })
-
-  } else {
-    // form
-    console.log("failure" + diff);
-    res.render('/');
-  }
 });
 
 
