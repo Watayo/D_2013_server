@@ -5,9 +5,9 @@ const admin = require('firebase-admin');
 require('dotenv').config();
 const env = process.env;
 const WebSocket = require('ws');
-const ws = new WebSocket('ws://desolate-ocean-79020.herokuapp.com', {
-  origin: 'https://desolate-ocean-79020.herokuapp.com'
-});
+// const ws = new WebSocket('ws://desolate-ocean-79020.herokuapp.com', {
+//   origin: 'https://desolate-ocean-79020.herokuapp.com'
+// });
 // const dews = new WebSocket('ws://localhost:4040', {
 //   origin: 'http://localhost:4040'
 // });
@@ -24,22 +24,13 @@ admin.initializeApp({
 
 let db = admin.firestore();
 
-ws.on('open', function open() {
-  console.log('connected');
-});
-
-ws.on('message', function incoming(data) {
-  console.log(data + "きた");
-});
-
-// dews.on('open', function open() {
+// ws.on('open', function open() {
 //   console.log('connected');
 // });
 
-// dews.on('message', function incoming(data) {
+// ws.on('message', function incoming(data) {
 //   console.log(data + "きた");
 // });
-
 router.get('/', (req, res) => {
   res.render('index');
 });
@@ -94,7 +85,7 @@ router.get('/setting_game', (req, res) => {
         res.render('unity_build');
 
         // game中にする
-        db.collection('users').doc(ID).set({
+        db.collection('users').doc(ID).update({
           on_game: true,
         })
 
@@ -121,12 +112,12 @@ router.post('/unity_score', (req, res) => {
 
   // firestoreのユーザースコアと派閥スコア(oioi)に反映。
   if (req.body.user_score === 1) {
-    db.collection('users').doc(req.body.user_id).set({
+    db.collection('users').doc(req.body.user_id).update({
       score: FieldValue.increment(),
       on_game: false
     })
   } else {
-    db.collection('users').doc(req.body.user_id).set({
+    db.collection('users').doc(req.body.user_id).update({
       on_game: false
     })
   }
