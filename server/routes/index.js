@@ -8,9 +8,9 @@ const WebSocket = require('ws');
 const ws = new WebSocket('ws://desolate-ocean-79020.herokuapp.com', {
   origin: 'https://desolate-ocean-79020.herokuapp.com'
 });
-const dews = new WebSocket('ws://localhost:4040', {
-  origin: 'http://localhost:4040'
-});
+// const dews = new WebSocket('ws://localhost:4040', {
+//   origin: 'http://localhost:4040'
+// });
 
 // console.log(env.PROJECT_ID);
 admin.initializeApp({
