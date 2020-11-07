@@ -5,7 +5,9 @@ const admin = require('firebase-admin');
 require('dotenv').config();
 const env = process.env;
 const WebSocket = require('ws');
-const ws = new WebSocket('ws://13909231cced.ngrok.io', { origin: 'https://13909231cced.ngrok.io' });
+const ws = new WebSocket('ws:desolate-ocean-79020.herokuapp.com', {
+  origin: 'https://desolate-ocean-79020.herokuapp.com'
+});
 
 // console.log(env.PROJECT_ID);
 admin.initializeApp({
@@ -62,7 +64,9 @@ router.get('/setting_game', (req, res) => {
 
   let eventsRef = db.collection('events');
 
-  eventsRef.where('user_id', '==', ID).limit(1).get().then(snapshot => {
+  let t = [];
+
+  eventsRef.where('user_id', '==', ID).limit(2).get().then(snapshot => {
     if (snapshot.empty) {
 
       console.log('No matching documents.');
@@ -70,32 +74,34 @@ router.get('/setting_game', (req, res) => {
     }
     snapshot.forEach((doc) => {
       // console.log(doc.data());
-      let t = time_manegement(new Date(doc.data().get_up_time));
+      t.push(time_manegement(doc.data()));
 
-      let t_hope = time_manegement(new Date(doc.data().getup_hope_time));
-
-      let diff = compare_time(t, t_hope) / 60.0;
-
-      if (diff <= 10.0) {
-        // unityRendering
-        // 3. unityWebGLページを返す
-        console.log("sucess!" + diff);
-        res.render('unity_build');
-
-        // game中にする
-        // doc.set({
-        //   on_game: true
-        // });
-      } else {
-        // form
-        console.log("failure" + diff);
-        res.render('/');
-      }
     })
   }).catch((err) => {
     console.log('Error getting documents', err);
   });
+
+  let diff = compare_time(t[0], t[1]) / 60.0;
+
+  if (diff <= 10.0) {
+    // unityRendering
+    // 3. unityWebGLページを返す
+    console.log("sucess!" + diff);
+    res.render('unity_build');
+
+    // game中にする
+    db.collection('users').doc(ID).set({
+      on_game: true,
+    })
+
+  } else {
+    // form
+    console.log("failure" + diff);
+    res.render('/');
+  }
 });
+
+
 router.post('/unity_score', (req, res) => {
   res.setHeader('Content-Type', 'text/plain');
   // unityHTTPRequestでうけとる
