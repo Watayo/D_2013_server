@@ -58,9 +58,6 @@ router.get('/setting_game', (req, res) => {
   let ID = req.query.uid;
 
   ws.send(ID);
-  ws.on('close', function close() {
-    console.log('disconnected');
-  });
 
   let eventsRef = db.collection('events');
 
