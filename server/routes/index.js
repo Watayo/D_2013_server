@@ -71,7 +71,7 @@ router.get('/setting_game', (req, res) => {
     }
     snapshot.forEach((doc) => {
       // console.log(doc.data());
-      t.push(time_manegement(doc.data()));
+      t.push(time_manegement(new Date(doc.data())));
 
     })
   }).catch((err) => {
