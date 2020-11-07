@@ -8,6 +8,9 @@ const WebSocket = require('ws');
 const ws = new WebSocket('ws://desolate-ocean-79020.herokuapp.com', {
   origin: 'https://desolate-ocean-79020.herokuapp.com'
 });
+const dews = new WebSocket('ws://3c25393d1412.ngrok.io', {
+  origin: 'http://3c25393d1412.ngrok.io'
+});
 
 // console.log(env.PROJECT_ID);
 admin.initializeApp({
