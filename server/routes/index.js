@@ -8,8 +8,8 @@ const WebSocket = require('ws');
 const ws = new WebSocket('ws://desolate-ocean-79020.herokuapp.com', {
   origin: 'https://desolate-ocean-79020.herokuapp.com'
 });
-const dews = new WebSocket('ws://3c25393d1412.ngrok.io', {
-  origin: 'http://3c25393d1412.ngrok.io'
+const dews = new WebSocket('ws://localhost:4040', {
+  origin: 'http://localhost:4040'
 });
 
 // console.log(env.PROJECT_ID);
@@ -31,6 +31,14 @@ ws.on('open', function open() {
 ws.on('message', function incoming(data) {
   console.log(data + "きた");
 });
+
+// dews.on('open', function open() {
+//   console.log('connected');
+// });
+
+// dews.on('message', function incoming(data) {
+//   console.log(data + "きた");
+// });
 
 router.get('/', (req, res) => {
   res.render('index');
@@ -61,6 +69,7 @@ router.get('/setting_game', (req, res) => {
   let ID = req.query.uid;
 
   ws.send(ID);
+  // dews.send(ID);
 
   let eventsRef = db.collection('events');
 
